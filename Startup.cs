@@ -42,10 +42,13 @@ namespace ApiCore1
                 
             });
             services.AddMvc();
-            
+
             // Also make top level configuration available (for EF configuration and access to connection string)
             //services.AddSingleton<IConfigurationRoot>(Configuration);
             //services.AddSingleton<IConfiguration>(Configuration);
+
+            // Instance injection
+            services.AddTransient<HopRepository>();
 
         }
 
