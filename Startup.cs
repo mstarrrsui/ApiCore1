@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
+using ApiCore1.Utilities.ErrorHandling;
 
 namespace ApiCore1
 {
@@ -50,7 +51,7 @@ namespace ApiCore1
             // Instance injection
             services.AddTransient<HopRepository>();
 
-            //services.AddScoped<ApiExceptionFilter>();
+            services.AddScoped<ApiExceptionFilter>();
 
         }
 

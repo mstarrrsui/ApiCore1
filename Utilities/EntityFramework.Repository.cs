@@ -604,7 +604,7 @@ namespace ApiCore1.Utilities
             }
 
             ErrorException = new Exception(Message);
-            throw ErrorException;
+            //throw ErrorException;
             //if (Options.ThrowExceptions)
             //    throw ErrorException;
         }

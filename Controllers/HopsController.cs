@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ApiCore1.Controllers
 {
+    [ServiceFilter(typeof(ApiExceptionFilter))]
     public class HopsController : Controller
     {
 
@@ -62,6 +63,15 @@ namespace ApiCore1.Controllers
                 throw new ApiException(_hopRepo.ErrorMessage, 500);
 
             return hop;
+        }
+
+        [HttpDelete("api/hop/{id:int}")]
+        public async Task<bool> DeleteHop(int id)
+        {
+            //if (!HttpContext.User.Identity.IsAuthenticated)
+            //    throw new ApiException("You have to be logged in to modify data", 401);
+
+            return await _hopRepo.DeleteHop(id);
         }
     }
 }

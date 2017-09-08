@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiCore1.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiCore1.Model
 {
@@ -33,6 +34,30 @@ namespace ApiCore1.Model
                 return null;
 
             return hop;
+        }
+
+        public async Task<bool> DeleteHop(int id)
+        {
+            using (var tx = Context.Database.BeginTransaction())
+            {
+
+                var hop = await Context.Hops
+                    .FirstOrDefaultAsync(a => a.Id == id);
+
+                if (hop == null)
+                {
+                    SetError("Invalid hop id.");
+                    return false;
+                }
+
+                Context.Hops.Remove(hop);
+
+                var result = await SaveAsync();
+                if (result)
+                    tx.Commit();
+
+                return result;
+            }
         }
     }
 }
