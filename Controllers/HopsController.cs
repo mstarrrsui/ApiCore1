@@ -3,6 +3,7 @@ using ApiCore1.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using ApiCore1.Utilities.ErrorHandling;
 using Microsoft.Extensions.Logging;
 
 namespace ApiCore1.Controllers
@@ -31,13 +32,36 @@ namespace ApiCore1.Controllers
             return await _context.Hops.ToListAsync();
         }
 
-        [HttpGet("api/hops/{id:int}")]
+        [HttpGet("api/hop/{id:int}")]
         public async Task<Hop> GetHop(int id)
         {
             _logger.LogInformation($"GETTING HOP ID {id}");
 
-            return await _hopRepo.Load((long)id);
+            return await _hopRepo.Load(id);
             
+        }
+
+        [HttpPost("api/hop")]
+        public async Task<Hop> SaveHop([FromBody] Hop postedHop)
+        {
+            //if (!HttpContext.User.Identity.IsAuthenticated)
+            //    throw new ApiException("You have to be logged in to modify data", 401);
+
+            if (!ModelState.IsValid)
+                throw new ApiException("Model binding failed.", 500);
+
+            if (!_hopRepo.Validate(postedHop))
+                throw new ApiException(_hopRepo.ErrorMessage, 500, _hopRepo.ValidationErrors);
+
+            // this doesn't work for updating the child entities properly
+            //if(!await AlbumRepo.SaveAsync(postedAlbum))
+            //    throw new ApiException(AlbumRepo.ErrorMessage, 500);
+
+            var hop = await _hopRepo.SaveHop(postedHop);
+            if (hop == null)
+                throw new ApiException(_hopRepo.ErrorMessage, 500);
+
+            return hop;
         }
     }
 }
