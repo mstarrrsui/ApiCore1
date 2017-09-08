@@ -50,6 +50,8 @@ namespace ApiCore1
             // Instance injection
             services.AddTransient<HopRepository>();
 
+            //services.AddScoped<ApiExceptionFilter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

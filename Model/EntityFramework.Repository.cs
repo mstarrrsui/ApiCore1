@@ -604,7 +604,7 @@ namespace ApiCore1.Model
             }
 
             ErrorException = new Exception(Message);
-
+            throw ErrorException;
             //if (Options.ThrowExceptions)
             //    throw ErrorException;
         }
@@ -626,6 +626,7 @@ namespace ApiCore1.Model
             }
 
             ErrorMessage = ErrorException.Message;
+            throw ex;
             //if (ex != null && Options.ThrowExceptions)
             //    throw ex;
         }

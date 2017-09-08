@@ -36,7 +36,7 @@ namespace ApiCore1.Controllers
         {
             _logger.LogInformation($"GETTING HOP ID {id}");
 
-            return await _hopRepo.Load(id);
+            return await _hopRepo.Load((long)id);
             
         }
     }
